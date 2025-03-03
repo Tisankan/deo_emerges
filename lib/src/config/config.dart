@@ -1,4 +1,4 @@
-import 'package:meta/meta.dart';
+// No imports needed here
 
 /// Configuration class for DeoClient that handles all network-related settings
 class DeoConfig {

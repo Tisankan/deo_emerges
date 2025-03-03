@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
-import 'package:retry/retry.dart';
 
 import '../errors/errors.dart';
 
@@ -133,8 +132,6 @@ class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // Transform DioException to DeoError
-    final deoError = DeoError.fromDioError(err);
-    
     // You can add additional error handling logic here
     // For example, logging to analytics, showing notifications, etc.
     

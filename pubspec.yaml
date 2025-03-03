@@ -1,7 +1,6 @@
 name: deo_emerges
 description: An advanced Flutter networking package built on top of Dio, offering concurrent request handling, comprehensive error management, and extensive features for modern Flutter applications.
 version: 0.1.0
-author: Tisankan
 homepage: https://github.com/Tisankan/deo_emerges
 repository: https://github.com/Tisankan/deo_emerges
 issue_tracker: https://github.com/Tisankan/deo_emerges/issues

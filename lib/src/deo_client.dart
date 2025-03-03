@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
-import 'package:retry/retry.dart';
 
 import 'config/config.dart';
 import 'errors/errors.dart';
@@ -185,13 +183,6 @@ class DeoClient {
     return _cancelTokens[key]!;
   }
 
-  /// Handles errors and converts them to DeoError instances
-  DeoError _handleError(dynamic error) {
-    if (error is DioException) {
-      return DeoError.fromDioError(error);
-    }
-    return DeoError(message: error.toString());
-  }
 
   /// Performs multiple requests concurrently
   Future<List<Response>> concurrent(List<Future<Response> Function()> requests) async {

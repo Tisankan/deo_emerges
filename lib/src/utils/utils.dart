@@ -130,7 +130,7 @@ class RetryUtils {
       try {
         return await function();
       } catch (e) {
-        if (e is! Exception || attempts >= maxRetries || (retryIf != null && !retryIf(e as Exception))) {
+        if (e is! Exception || attempts >= maxRetries || (retryIf != null && !retryIf(e))) {
           rethrow;
         }
         
