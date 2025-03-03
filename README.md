@@ -3,6 +3,7 @@
 An advanced Flutter networking package built on top of Dio, offering concurrent request handling, comprehensive error management, and extensive features for modern Flutter applications.
 
 [![pub package](https://img.shields.io/pub/v/deo_emerges.svg)](https://pub.dev/packages/deo_emerges)
+[![Flutter Platform](https://img.shields.io/badge/Platform-Flutter-02569B.svg)](https://flutter.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
@@ -169,6 +170,10 @@ final client = DeoClient(
   ),
 );
 ```
+
+## Author
+
+Developed by Tisankan
 
 ## Contributing
 

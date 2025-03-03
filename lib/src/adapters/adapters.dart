@@ -6,7 +6,6 @@ import 'package:riverpod/riverpod.dart';
 import '../deo_client.dart';
 import '../errors/errors.dart';
 
-/// Base file for exporting all adapters
 /// This file contains all the adapter implementations directly to avoid circular dependencies
 
 /// Provider adapter for integrating DeoClient with the Provider package

@@ -1,0 +1,24 @@
+name: deo_emerges_example
+description: Example app for Deo Emerges package
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  deo_emerges:
+    path: ../
+  provider: ^6.0.5
+  flutter_bloc: ^8.1.3
+  flutter_riverpod: ^2.3.10
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.3
+
+flutter:
+  uses-material-design: true
