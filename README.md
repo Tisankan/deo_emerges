@@ -23,7 +23,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  deo_emerges: ^0.1.0
+  deo_emerges: ^0.1.3
 ```
 
 Then run:
