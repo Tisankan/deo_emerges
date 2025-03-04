@@ -15,7 +15,8 @@ class HeaderUtils {
   }
 
   /// Creates headers with authorization token
-  static Map<String, dynamic> authHeaders(String token, {String prefix = 'Bearer'}) {
+  static Map<String, dynamic> authHeaders(String token,
+      {String prefix = 'Bearer'}) {
     return {
       ...jsonHeaders(),
       'Authorization': '$prefix $token',
@@ -35,10 +36,11 @@ class HeaderUtils {
 /// Utility class for handling URL operations
 class UrlUtils {
   /// Builds a URL with query parameters
-  static String buildUrl(String baseUrl, String path, [Map<String, dynamic>? queryParams]) {
+  static String buildUrl(String baseUrl, String path,
+      [Map<String, dynamic>? queryParams]) {
     final uri = Uri.parse(baseUrl);
     final pathUri = Uri.parse(path);
-    
+
     final newUri = Uri(
       scheme: uri.scheme,
       host: uri.host,
@@ -46,13 +48,14 @@ class UrlUtils {
       path: pathUri.path,
       queryParameters: queryParams,
     );
-    
+
     return newUri.toString();
   }
-  
+
   /// Joins URL segments
   static String joinSegments(List<String> segments) {
-    return segments.map((segment) => segment.trim().replaceAll(RegExp(r'^/|/$'), ''))
+    return segments
+        .map((segment) => segment.trim().replaceAll(RegExp(r'^/|/$'), ''))
         .where((segment) => segment.isNotEmpty)
         .join('/');
   }
@@ -64,16 +67,17 @@ class SerializationUtils {
   static String toJson(dynamic data) {
     return jsonEncode(data);
   }
-  
+
   /// Parses JSON to an object
   static dynamic fromJson(String json) {
     return jsonDecode(json);
   }
-  
+
   /// Converts a map to query parameters
   static String toQueryParams(Map<String, dynamic> params) {
     return params.entries
-        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
+        .map((e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
         .join('&');
   }
 }
@@ -84,12 +88,12 @@ class SecurityUtils {
   static String md5(String input) {
     return crypto.md5.convert(utf8.encode(input)).toString();
   }
-  
+
   /// Generates a SHA-256 hash of the input string
   static String sha256(String input) {
     return crypto.sha256.convert(utf8.encode(input)).toString();
   }
-  
+
   /// Generates a basic authentication header value
   static String basicAuth(String username, String password) {
     final credentials = '$username:$password';
@@ -101,7 +105,8 @@ class SecurityUtils {
 /// Utility class for network connectivity
 class ConnectivityUtils {
   /// Checks if a URL is reachable
-  static Future<bool> isUrlReachable(String url, {Duration timeout = const Duration(seconds: 5)}) async {
+  static Future<bool> isUrlReachable(String url,
+      {Duration timeout = const Duration(seconds: 5)}) async {
     try {
       final client = HttpClient();
       client.connectionTimeout = timeout;
@@ -125,15 +130,17 @@ class RetryUtils {
     bool Function(Exception)? retryIf,
   }) async {
     int attempts = 0;
-    
+
     while (true) {
       try {
         return await function();
       } catch (e) {
-        if (e is! Exception || attempts >= maxRetries || (retryIf != null && !retryIf(e))) {
+        if (e is! Exception ||
+            attempts >= maxRetries ||
+            (retryIf != null && !retryIf(e))) {
           rethrow;
         }
-        
+
         attempts++;
         await Future.delayed(delay * attempts);
       }

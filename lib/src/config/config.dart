@@ -59,7 +59,8 @@ class DeoConfig {
       connectTimeout: connectTimeout ?? this.connectTimeout,
       receiveTimeout: receiveTimeout ?? this.receiveTimeout,
       sendTimeout: sendTimeout ?? this.sendTimeout,
-      maxConcurrentRequests: maxConcurrentRequests ?? this.maxConcurrentRequests,
+      maxConcurrentRequests:
+          maxConcurrentRequests ?? this.maxConcurrentRequests,
       maxRetries: maxRetries ?? this.maxRetries,
       validateCertificate: validateCertificate ?? this.validateCertificate,
       certificates: certificates ?? this.certificates,

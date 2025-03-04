@@ -30,7 +30,7 @@ class DeoProviderAdapter extends ChangeNotifier {
       _setLoading(true);
       _error = null;
       notifyListeners();
-      
+
       final result = await request();
       _setLoading(false);
       return result;

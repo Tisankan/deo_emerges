@@ -5,19 +5,19 @@ import 'dart:io' show SocketException;
 class DeoError implements Exception {
   /// Error message
   final String message;
-  
+
   /// HTTP status code if applicable
   final int? statusCode;
-  
+
   /// Original error that caused this error
   final dynamic originalError;
-  
+
   /// Request data that caused this error
   final dynamic requestData;
-  
+
   /// Response data received with this error
   final dynamic responseData;
-  
+
   /// Error type classification
   final DeoErrorType type;
 
@@ -105,19 +105,19 @@ class DeoError implements Exception {
 enum DeoErrorType {
   /// Network-related errors (e.g., no internet connection)
   network,
-  
+
   /// Timeout errors (connection, send, or receive timeout)
   timeout,
-  
+
   /// Client-side errors (4xx status codes)
   clientError,
-  
+
   /// Server-side errors (5xx status codes)
   serverError,
-  
+
   /// Request was cancelled
   cancelled,
-  
+
   /// Unknown or unclassified errors
   unknown,
 }

@@ -176,16 +176,16 @@ class DeoClient {
   /// Gets or creates a cancel token for the given key
   CancelToken _getCancelToken(String? key) {
     if (key == null) return CancelToken();
-    
+
     if (!_cancelTokens.containsKey(key)) {
       _cancelTokens[key] = CancelToken();
     }
     return _cancelTokens[key]!;
   }
 
-
   /// Performs multiple requests concurrently
-  Future<List<Response>> concurrent(List<Future<Response> Function()> requests) async {
+  Future<List<Response>> concurrent(
+      List<Future<Response> Function()> requests) async {
     try {
       final responses = await Future.wait(requests.map((req) => req()));
       return responses;

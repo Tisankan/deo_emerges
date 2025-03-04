@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -9,19 +7,11 @@ import 'package:deo_emerges/deo_emerges.dart';
 // Generate mocks
 @GenerateMocks([Dio])
 
-// Import the generated mocks file
-import 'interceptors_test.mocks.dart';
-
 // Custom mock class for testing
-class MockErrorInterceptorHandler extends Mock implements ErrorInterceptorHandler {
+class MockErrorInterceptorHandler extends Mock
+    implements ErrorInterceptorHandler {
   @override
   void resolve(Response<dynamic> response) {}
-  
-  @override
-  void next(DioException err) {}
-
-  @override
-  void reject(DioException err) {}
 }
 
 // Custom handler for error tests that doesn't propagate errors
@@ -36,9 +26,10 @@ class TestErrorInterceptorHandler extends ErrorInterceptorHandler {
 class ResponseMatcher extends Matcher {
   @override
   bool matches(dynamic item, Map matchState) => item is Response;
-  
+
   @override
-  Description describe(Description description) => description.add('is a Response');
+  Description describe(Description description) =>
+      description.add('is a Response');
 }
 
 void main() {
@@ -85,7 +76,7 @@ void main() {
       // For this test, we only verify that the error type is correct
       // We use a custom handler that doesn't propagate errors
       expect(error.type, equals(DioExceptionType.connectionTimeout));
-      
+
       // Use our custom handler that doesn't propagate errors
       interceptor.onError(error, TestErrorInterceptorHandler());
     });
@@ -97,7 +88,8 @@ void main() {
     late DioException error;
 
     setUp(() {
-      interceptor = RetryInterceptor(maxRetries: 2, retryDelay: Duration(milliseconds: 100));
+      interceptor = RetryInterceptor(
+          maxRetries: 2, retryDelay: Duration(milliseconds: 100));
       options = RequestOptions(path: '/test');
       error = DioException(
         type: DioExceptionType.connectionTimeout,
@@ -108,26 +100,26 @@ void main() {
     test('should retry on retryable errors', () async {
       options.method = 'GET';
       options.headers = {'x-test-mode': 'true'}; // Add test mode header
-      
+
       // Create a mock handler
       final handler = MockErrorInterceptorHandler();
-      
+
       // Call the interceptor
       await interceptor.onError(error, handler);
-      
+
       // We can't directly verify the resolve call due to type issues
       // Instead, we'll check that the test completed without errors
     });
 
     test('should not retry on non-retryable errors', () async {
       options.method = 'POST';
-      
+
       // Create a mock handler
       final handler = MockErrorInterceptorHandler();
-      
+
       // Call the interceptor
       await interceptor.onError(error, handler);
-      
+
       // We can't directly verify the next call due to mockito issues
       // Instead, we'll check that the test completed without errors
     });
@@ -135,13 +127,13 @@ void main() {
     test('should respect max retries limit', () async {
       options.method = 'GET';
       options.extra = {'retryCount': 2}; // Already at max retries
-      
+
       // Create a mock handler
       final handler = MockErrorInterceptorHandler();
-      
+
       // Call the interceptor
       await interceptor.onError(error, handler);
-      
+
       // We can't directly verify the next call due to mockito issues
       // Instead, we'll check that the test completed without errors
     });
@@ -166,10 +158,11 @@ void main() {
       options.method = 'GET';
       final responseHandler = ResponseInterceptorHandler();
       final requestHandler = RequestInterceptorHandler();
-      
+
       interceptor.onResponse(response, responseHandler);
-      await Future.delayed(Duration(milliseconds: 100)); // Small delay to ensure cache is set
-      
+      await Future.delayed(
+          Duration(milliseconds: 100)); // Small delay to ensure cache is set
+
       interceptor.onRequest(options, requestHandler);
       expect(options.method, equals('GET'));
       expect(response.data['success'], isTrue);
@@ -179,10 +172,11 @@ void main() {
       options.method = 'POST';
       final responseHandler = ResponseInterceptorHandler();
       final requestHandler = RequestInterceptorHandler();
-      
+
       interceptor.onResponse(response, responseHandler);
-      await Future.delayed(Duration(milliseconds: 100)); // Small delay to ensure cache processing
-      
+      await Future.delayed(Duration(
+          milliseconds: 100)); // Small delay to ensure cache processing
+
       interceptor.onRequest(options, requestHandler);
       expect(options.method, equals('POST'));
     });
@@ -191,10 +185,11 @@ void main() {
       options.method = 'GET';
       final responseHandler = ResponseInterceptorHandler();
       final requestHandler = RequestInterceptorHandler();
-      
+
       interceptor.onResponse(response, responseHandler);
-      await Future.delayed(Duration(milliseconds: 100)); // Small delay to ensure cache is set
-      
+      await Future.delayed(
+          Duration(milliseconds: 100)); // Small delay to ensure cache is set
+
       // Simulate cache expiration by manipulating the cache entry timestamp
       await Future.delayed(Duration(milliseconds: 200));
       interceptor.onRequest(options, requestHandler);
@@ -240,7 +235,7 @@ void main() {
     test('should handle token refresh on 401', () async {
       final handler = MockErrorInterceptorHandler();
       await interceptor.onError(error, handler);
-      
+
       // Verify that the error has the correct status code
       expect(error.response?.statusCode, equals(401));
     });

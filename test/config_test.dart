@@ -5,7 +5,7 @@ void main() {
   group('DeoConfig', () {
     test('should initialize with default values', () {
       final config = DeoConfig();
-      
+
       expect(config.baseUrl, '');
       expect(config.connectTimeout, const Duration(seconds: 30));
       expect(config.receiveTimeout, const Duration(seconds: 30));
@@ -13,7 +13,7 @@ void main() {
       expect(config.validateCertificate, false);
       expect(config.certificates, isEmpty);
     });
-    
+
     test('should initialize with custom values', () {
       final config = DeoConfig(
         baseUrl: 'https://api.example.com',
@@ -23,7 +23,7 @@ void main() {
         validateCertificate: true,
         certificates: ['cert1', 'cert2'],
       );
-      
+
       expect(config.baseUrl, 'https://api.example.com');
       expect(config.connectTimeout, const Duration(seconds: 10));
       expect(config.receiveTimeout, const Duration(seconds: 15));
@@ -31,12 +31,12 @@ void main() {
       expect(config.validateCertificate, true);
       expect(config.certificates, ['cert1', 'cert2']);
     });
-    
+
     test('should handle empty baseUrl', () {
       final config = DeoConfig(baseUrl: '');
       expect(config.baseUrl, '');
     });
-    
+
     test('should handle empty certificates', () {
       final config = DeoConfig(certificates: []);
       expect(config.certificates, isEmpty);

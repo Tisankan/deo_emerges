@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Using Provider adapter
   late final DeoProviderAdapter _providerAdapter;
-  
+
   // Response data
   List<dynamic> _posts = [];
   bool _isLoading = false;
@@ -96,8 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     } else if (result != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Post created: ${result['title']}'))
-      );
+          SnackBar(content: Text('Post created: ${result['title']}')));
       _fetchData(); // Refresh the list
     }
   }
@@ -118,9 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       setState(() {
         _isLoading = false;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Fetched ${responses.length} posts concurrently'))
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Fetched ${responses.length} posts concurrently')));
       });
     } catch (e) {
       setState(() {

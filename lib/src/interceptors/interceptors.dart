@@ -14,7 +14,8 @@ class LoggingInterceptor extends Interceptor {
   final Logger _logger = Logger();
   final bool _enableLogging;
 
-  LoggingInterceptor({bool enableLogging = true}) : _enableLogging = enableLogging;
+  LoggingInterceptor({bool enableLogging = true})
+      : _enableLogging = enableLogging;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -63,12 +64,13 @@ class RetryInterceptor extends Interceptor {
         _retryDelay = retryDelay ?? const Duration(seconds: 1);
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+      DioException err, ErrorInterceptorHandler handler) async {
     final options = err.requestOptions;
-    
+
     // Skip retry for non-idempotent methods unless explicitly allowed
-    if (options.method != 'GET' && 
-        options.method != 'HEAD' && 
+    if (options.method != 'GET' &&
+        options.method != 'HEAD' &&
         options.method != 'OPTIONS' &&
         options.method != 'DELETE' &&
         !(options.extra['allowRetry'] == true)) {
@@ -83,22 +85,22 @@ class RetryInterceptor extends Interceptor {
 
     // Get current retry count or initialize to 0
     final retryCount = options.extra['retryCount'] as int? ?? 0;
-    
+
     if (retryCount < _maxRetries) {
       // Increment retry count
       options.extra['retryCount'] = retryCount + 1;
-      
+
       // Calculate delay with exponential backoff
       final delay = _retryDelay * (1 << retryCount); // 2^retryCount * delay
-      
+
       try {
         await Future.delayed(delay);
-        
+
         // Create a new request with the same options
         // In a test environment, we'll use a mock response directly
         // In a real environment, we'll create a new Dio instance
         Response? response;
-        
+
         // For testing purposes, we'll check if we're in a test environment
         // by looking for a test-specific header
         if (options.headers.containsKey('x-test-mode')) {
@@ -113,7 +115,7 @@ class RetryInterceptor extends Interceptor {
           final dio = Dio();
           response = await dio.fetch(options);
         }
-        
+
         // If successful, call the handler with the response
         return handler.resolve(response);
       } catch (e) {
@@ -121,7 +123,7 @@ class RetryInterceptor extends Interceptor {
         return handler.next(err);
       }
     }
-    
+
     // If max retries reached, continue with the error
     return handler.next(err);
   }
@@ -134,7 +136,7 @@ class ErrorInterceptor extends Interceptor {
     // Transform DioException to DeoError
     // You can add additional error handling logic here
     // For example, logging to analytics, showing notifications, etc.
-    
+
     // Continue with the error
     handler.next(err);
   }
@@ -145,7 +147,8 @@ class CacheInterceptor extends Interceptor {
   final Map<String, CacheEntry> _cache = {};
   final Duration _maxAge;
 
-  CacheInterceptor({Duration? maxAge}) : _maxAge = maxAge ?? const Duration(minutes: 5);
+  CacheInterceptor({Duration? maxAge})
+      : _maxAge = maxAge ?? const Duration(minutes: 5);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -176,10 +179,10 @@ class CacheInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // Skip caching if cache is disabled for this request
-    if (response.requestOptions.method == 'GET' && 
+    if (response.requestOptions.method == 'GET' &&
         response.requestOptions.extra['disableCache'] != true) {
       final cacheKey = _getCacheKey(response.requestOptions);
-      
+
       // Store response in cache
       _cache[cacheKey] = CacheEntry(
         data: response.data,
@@ -189,7 +192,7 @@ class CacheInterceptor extends Interceptor {
         maxAge: _maxAge,
       );
     }
-    
+
     handler.next(response);
   }
 
@@ -235,14 +238,16 @@ class CacheEntry {
 class AuthInterceptor extends Interceptor {
   final String Function()? _tokenProvider;
   final Future<String> Function()? _asyncTokenProvider;
-  final Future<bool> Function(DioException error, String token)? _refreshTokenCallback;
+  final Future<bool> Function(DioException error, String token)?
+      _refreshTokenCallback;
   final String _headerKey;
   final String _headerPrefix;
 
   AuthInterceptor({
     String Function()? tokenProvider,
     Future<String> Function()? asyncTokenProvider,
-    Future<bool> Function(DioException error, String token)? refreshTokenCallback,
+    Future<bool> Function(DioException error, String token)?
+        refreshTokenCallback,
     String headerKey = 'Authorization',
     String headerPrefix = 'Bearer ',
   })  : _tokenProvider = tokenProvider,
@@ -287,7 +292,8 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+      DioException err, ErrorInterceptorHandler handler) async {
     // Check if error is due to unauthorized access and we have a refresh callback
     if (err.response?.statusCode == 401 && _refreshTokenCallback != null) {
       try {

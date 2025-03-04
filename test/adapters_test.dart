@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:deo_emerges/deo_emerges.dart';
 
@@ -58,7 +57,8 @@ void main() {
     });
 
     test('should handle non-DeoError in request', () async {
-      final result = await adapter.execute(() async => throw Exception('Test exception'));
+      final result =
+          await adapter.execute(() async => throw Exception('Test exception'));
 
       expect(adapter.isLoading, isFalse);
       expect(adapter.error, isNotNull);
