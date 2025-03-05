@@ -163,7 +163,8 @@ class RequestTimeoutException extends DeoError {
         );
 }
 
-/// Exception thrown when there is a network error
+
+/// Exception thrown when there is a network errors
 class NetworkException extends DeoError {
   NetworkException({
     String message = 'Network error occurred',

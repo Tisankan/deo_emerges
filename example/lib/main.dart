@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (result != null) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Post created: ${result['title']}')));
-      _fetchData(); // Refresh the list
+      _fetchData(); 
     }
   }
 
