@@ -1,0 +1,36 @@
+# Workflow name
+name: Dart
+
+# Trigger on push/pull_request to main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out repository code
+      - uses: actions/checkout@v4
+
+      # 2. Set up Dart SDK (pinned to specific commit for security/stability)
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: dart pub get
+
+      # 4. (Optional) Verify code formatting
+      # - name: Verify formatting
+      #   run: dart format --output=none --set-exit-if-changed .
+
+      # 5. Run static analysis
+      - name: Analyze project source
+        run: dart analyze
+
+      # 6. Run tests
+      - name: Run tests
+        run: dart test
